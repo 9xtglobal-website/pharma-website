@@ -10,7 +10,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex items-center">
-              <Logo height={56} />
+              <Logo className="h-16 w-auto sm:h-20" />
             </div>
             <p className="mt-3 text-sm leading-relaxed text-brand-grey-500">
               Science-backed nutraceutical formulations for modern wellness.
@@ -87,19 +87,19 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5">
               <li className="text-sm text-brand-grey-500">
-                Marketed by AMT Pharma Pvt. Ltd.
+                Marketed by 9X Pharma
               </li>
               <li className="text-sm text-brand-grey-500">
                 Navi Mumbai, Maharashtra, India
               </li>
               <li>
-                <a href="mailto:info@amtpharma.com" className="text-sm text-brand-grey-500 transition-colors hover:text-brand-navy">
-                  info@amtpharma.com
+                <a href="mailto:info@9xtg.com" className="text-sm text-brand-grey-500 transition-colors hover:text-brand-navy">
+                  info@9xtg.com
                 </a>
               </li>
               <li>
-                <a href="tel:+917039345030" className="text-sm text-brand-grey-500 transition-colors hover:text-brand-navy">
-                  +91 7039345030
+                <a href="tel:+918590898080" className="text-sm text-brand-grey-500 transition-colors hover:text-brand-navy">
+                  +91 8590898080
                 </a>
               </li>
             </ul>
