@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+import Logo from "@/components/ui/Logo";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -22,14 +23,9 @@ export default function Navbar() {
       <div className="container-main">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-navy">
-              <span className="text-sm font-bold text-white">9X</span>
-            </div>
-            <div>
-              <span className="text-lg font-bold text-brand-navy">9X Pharma</span>
-              <span className="ml-1 hidden text-xs text-brand-grey-400 sm:inline">Wellness</span>
-            </div>
+          <Link href="/" className="flex items-center gap-2" aria-label="9X Pharma home">
+            <Logo height={40} />
+            <span className="hidden text-lg font-bold text-brand-navy sm:inline">Pharma</span>
           </Link>
 
           {/* Desktop Nav */}

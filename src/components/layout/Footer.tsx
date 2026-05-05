@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SUPPLEMENT_DISCLAIMER, WHATSAPP_NUMBER } from "@/lib/constants";
+import Logo from "@/components/ui/Logo";
 
 export default function Footer() {
   return (
@@ -9,10 +10,8 @@ export default function Footer() {
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-navy">
-                <span className="text-sm font-bold text-white">9X</span>
-              </div>
-              <span className="text-lg font-bold text-brand-navy">9X Pharma</span>
+              <Logo height={44} />
+              <span className="text-lg font-bold text-brand-navy">Pharma</span>
             </div>
             <p className="mt-3 text-sm leading-relaxed text-brand-grey-500">
               Science-backed nutraceutical formulations for modern wellness.
