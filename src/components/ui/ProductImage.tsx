@@ -15,6 +15,18 @@ interface ProductImageProps {
   sizes?: string;
 }
 
+// Prefix asset paths with the configured base path so they work both at
+// "/" (local dev) and "/9xpharma/" (GitHub Pages).
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
+function withBasePath(src: string): string {
+  if (!src) return src;
+  if (/^(https?:|data:|blob:)/.test(src)) return src; // absolute URL → leave alone
+  if (!BASE_PATH) return src;
+  if (src.startsWith(BASE_PATH + "/")) return src; // already prefixed
+  return BASE_PATH + (src.startsWith("/") ? src : "/" + src);
+}
+
 /**
  * Renders a product image with a styled placeholder underneath.
  * If the image file exists, it covers the placeholder.
@@ -37,6 +49,8 @@ export default function ProductImage({
   const [loaded, setLoaded] = useState(false);
   const [errored, setErrored] = useState(false);
 
+  const resolvedSrc = withBasePath(src);
+
   const placeholder = (
     <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-brand-grey-50 to-brand-grey-100 p-4 text-center">
       <span className="text-2xl font-bold text-brand-navy/20 sm:text-3xl lg:text-4xl">
@@ -53,7 +67,7 @@ export default function ProductImage({
         {!errored && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={src}
+            src={resolvedSrc}
             alt={alt}
             loading={priority ? "eager" : "lazy"}
             onLoad={() => setLoaded(true)}
@@ -72,7 +86,7 @@ export default function ProductImage({
       {!errored && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={src}
+          src={resolvedSrc}
           alt={alt}
           width={width ?? 600}
           height={height ?? 600}
