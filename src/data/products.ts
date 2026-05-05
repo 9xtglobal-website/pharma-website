@@ -189,7 +189,7 @@ export const products: Product[] = [
     currency: "INR",
     unit: "15 gm",
     form: "gel",
-    images: ["/images/products/erexio-1.jpg", "/images/products/erexio-2.jpg", "/images/products/erexio-3.jpg", "/images/products/erexio-4.jpg"],
+    images: ["/images/products/erexio-1.png", "/images/products/erexio-2.png", "/images/products/erexio-3.png", "/images/products/erexio-4.png"],
     ingredients: [
       { name: "Ethanol" },
       { name: "Aqua" },

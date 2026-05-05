@@ -9,9 +9,8 @@ export default function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <div className="flex items-center gap-2">
-              <Logo height={44} />
-              <span className="text-lg font-bold text-brand-navy">Pharma</span>
+            <div className="flex items-center">
+              <Logo height={56} />
             </div>
             <p className="mt-3 text-sm leading-relaxed text-brand-grey-500">
               Science-backed nutraceutical formulations for modern wellness.

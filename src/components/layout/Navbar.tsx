@@ -23,9 +23,8 @@ export default function Navbar() {
       <div className="container-main">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2" aria-label="9X Pharma home">
-            <Logo height={40} />
-            <span className="hidden text-lg font-bold text-brand-navy sm:inline">Pharma</span>
+          <Link href="/" className="flex items-center" aria-label="9X Pharma home">
+            <Logo height={44} />
           </Link>
 
           {/* Desktop Nav */}
