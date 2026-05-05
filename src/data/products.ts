@@ -13,7 +13,7 @@ export const products: Product[] = [
     currency: "INR",
     unit: "60 Vegetarian Capsules",
     form: "capsule",
-    images: ["/images/products/nexiwell-1.jpg", "/images/products/nexiwell-2.jpg", "/images/products/nexiwell-3.jpg", "/images/products/nexiwell-4.jpg"],
+    images: ["/images/products/nexiwell-1.png", "/images/products/nexiwell-2.png", "/images/products/nexiwell-3.png", "/images/products/nexiwell-4.png"],
     ingredients: [
       { name: "Trigonella foenum-graecum extract", commonName: "Fenugreek", amount: "142 mg" },
       { name: "Mucuna pruriens extract", commonName: "Velvet Bean", amount: "108 mg" },
@@ -69,7 +69,7 @@ export const products: Product[] = [
     currency: "INR",
     unit: "30 Film-Coated Tablets",
     form: "tablet",
-    images: ["/images/products/sleepexia-1.jpg", "/images/products/sleepexia-2.jpg", "/images/products/sleepexia-3.jpg", "/images/products/sleepexia-4.jpg"],
+    images: ["/images/products/sleepexia-1.png", "/images/products/sleepexia-2.png", "/images/products/sleepexia-3.png", "/images/products/sleepexia-4.png"],
     ingredients: [
       { name: "Magnesium Bisglycinate", amount: "200 mg", rdaPercent: "45.45%" },
       { name: "Bacopa monnieri extract", commonName: "Brahmi", amount: "120 mg" },
@@ -126,7 +126,7 @@ export const products: Product[] = [
     currency: "INR",
     unit: "60 Vegetarian Capsules (4 x 15)",
     form: "capsule",
-    images: ["/images/products/ulida-1.jpg", "/images/products/ulida-2.jpg", "/images/products/ulida-3.jpg", "/images/products/ulida-4.jpg"],
+    images: ["/images/products/ulida-1.png", "/images/products/ulida-2.png", "/images/products/ulida-3.png", "/images/products/ulida-4.png"],
     ingredients: [
       { name: "Tribulus terrestris fruit extract", amount: "180 mg" },
       { name: "L-Arginine", amount: "90 mg" },
