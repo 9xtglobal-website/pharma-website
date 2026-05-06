@@ -63,8 +63,6 @@ export default function UpiCheckout({ onClose }: UpiCheckoutProps) {
     note,
   });
 
-  const isPlaceholder = UPI_VPA === "PLACEHOLDER@upi";
-
   // Build the WhatsApp confirmation message
   const orderLines = items
     .map(
@@ -89,18 +87,6 @@ export default function UpiCheckout({ onClose }: UpiCheckoutProps) {
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=10&data=${encodeURIComponent(
     upiUri
   )}`;
-
-  if (isPlaceholder) {
-    return (
-      <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-        <p className="font-semibold">UPI checkout setup pending</p>
-        <p className="mt-1 text-xs">
-          The merchant UPI ID hasn&apos;t been configured yet. Please use the
-          WhatsApp order option below for now.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-4">
