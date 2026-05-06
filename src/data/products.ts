@@ -176,16 +176,14 @@ export const products: Product[] = [
       "Ulida vegetarian capsules with Tribulus terrestris, L-Arginine, Ginkgo biloba, Fenugreek & Zinc. Supports male vitality and healthy circulation. 60 capsules.",
   },
   {
-    // Data extracted from creative only. PRICE NOT SHOWN ON CREATIVE — set to 0 for now
-    // and the UI displays "Price on request — Chat with us". Update mrp/salePrice when provided.
     id: "erexio",
     slug: "erexio",
     name: "Erexio",
     tagline: "Bring the spark back",
     description:
       "A fast-acting topical gel designed to support stronger, longer-lasting performance when you need it. Easy to use and formulated for convenient application.",
-    mrp: 0,
-    salePrice: 0,
+    mrp: 700,
+    salePrice: 700,
     currency: "INR",
     unit: "15 gm",
     form: "gel",
