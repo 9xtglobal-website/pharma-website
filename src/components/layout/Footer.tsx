@@ -10,7 +10,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex items-center">
-              <Logo className="h-20 w-auto sm:h-24 lg:h-28" />
+              <Logo className="h-24 w-auto sm:h-28 lg:h-32" />
             </div>
             <p className="mt-3 text-sm leading-relaxed text-brand-grey-500">
               Science-backed nutraceutical formulations for modern wellness.

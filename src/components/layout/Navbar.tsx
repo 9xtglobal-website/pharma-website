@@ -21,10 +21,10 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-brand-grey-100 bg-white/95 backdrop-blur-md">
       <div className="container-main">
-        <div className="flex h-24 items-center justify-between sm:h-28 lg:h-32">
+        <div className="flex h-20 items-center justify-between sm:h-24">
           {/* Logo */}
           <Link href="/" className="flex items-center" aria-label="9X Pharma home">
-            <Logo className="h-16 w-auto sm:h-20 lg:h-24" />
+            <Logo className="h-24 w-auto sm:h-28 lg:h-32" />
           </Link>
 
           {/* Desktop Nav */}
