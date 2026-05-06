@@ -9,3 +9,8 @@ export const MAX_QUANTITY = 10;
 export const DELIVERY_DAYS = "3-5 business days";
 export const COD_AVAILABLE = true;
 export const RETURN_POLICY_DAYS = 7;
+
+// UPI payment config — used by the UPI deep-link checkout.
+// TODO: Replace UPI_VPA with the real merchant UPI ID before going live.
+export const UPI_VPA = "PLACEHOLDER@upi"; // e.g. "9xpharma@hdfc"
+export const UPI_MERCHANT_NAME = "9X Pharma";
