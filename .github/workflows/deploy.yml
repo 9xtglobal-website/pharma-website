@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -31,12 +31,13 @@ jobs:
         run: npm ci
 
       - name: Build static site
-        env:
-          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+        # Site is served from a custom domain root, so no basePath is needed.
         run: npm run build
 
-      - name: Add .nojekyll
-        run: touch out/.nojekyll
+      - name: Add .nojekyll and CNAME for custom domain
+        run: |
+          touch out/.nojekyll
+          echo "pharma.9xtg.com" > out/CNAME
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
