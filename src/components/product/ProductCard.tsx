@@ -28,7 +28,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
 
   return (
-    <div className="group card relative flex flex-col">
+    <div className="group card relative flex h-full flex-col">
       {/* Badges */}
       <div className="absolute left-4 top-4 z-10 flex flex-col gap-1">
         {product.stockStatus === "low_stock" && (
@@ -77,8 +77,8 @@ export default function ProductCard({ product }: ProductCardProps) {
         <PriceDisplay mrp={product.mrp} salePrice={product.salePrice} size="sm" showSavings={false} />
       </div>
 
-      {/* Actions */}
-      <div className="mt-4 flex gap-2">
+      {/* Actions — pushed to bottom of card so buttons line up across the row */}
+      <div className="mt-auto flex gap-2 pt-4">
         {product.salePrice === 0 ? (
           <a
             href={getWhatsAppUrl(WHATSAPP_NUMBER, `Hi, I'd like to know more about ${product.name}.`)}
