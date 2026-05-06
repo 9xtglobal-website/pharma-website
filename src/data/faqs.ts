@@ -108,33 +108,39 @@ export const faqs: FAQ[] = [
 
   // Erexio FAQs (based on creative information only)
   {
-    question: "What is Erexio?",
+    question: "What is Erexio Gel?",
     answer:
-      "Erexio is a fast-acting topical gel designed to support stronger, longer-lasting performance for adult men. It comes in a 15 gm pack and is formulated for convenient external application.",
+      "Erexio Gel is a fast-acting topical stimul gel intended for use by adult men. It is designed to support men experiencing erectile dysfunction (ED). It is a topical product and has no known drug interactions, and may be considered by men who are unable to use oral PDE5 inhibitors.",
     productSlug: "erexio",
   },
   {
-    question: "What are the ingredients in Erexio?",
+    question: "How do I use Erexio Gel?",
     answer:
-      "Erexio contains Ethanol, Aqua, Glycerin, Propylene Glycol, Carbomer, and Potassium Hydroxide. For the complete ingredient list and any percentage details, please refer to the product packaging.",
+      "Apply 0.3 ml directly to the glans (head) of the penis, gently massage for approximately 15 seconds, and use immediately prior to intercourse. Each 0.3 ml amount is intended for one-time use for a single intercourse attempt. Always follow the instructions provided with the product.",
     productSlug: "erexio",
   },
   {
-    question: "How do I use Erexio?",
+    question: "What is the suggested single-use amount?",
     answer:
-      "Erexio is a topical gel for external use only. Please follow the directions printed on the product packaging or consult a healthcare professional for guidance.",
+      "0.3 ml per application. The 15 gm tube provides multiple applications. Each 0.3 ml amount is intended for one-time use for a single intercourse attempt.",
     productSlug: "erexio",
   },
   {
-    question: "Is Erexio a medicine?",
+    question: "Does Erexio have drug interactions?",
     answer:
-      "No. As stated on the product, Erexio is not a medicine and is for external use only. Always read the label carefully before use and keep out of reach of children.",
+      "Erexio Gel has no known drug interactions. It is a topical product and may be considered by men unable to use oral PDE5 inhibitors. If you have underlying medical conditions, consult a healthcare professional before use.",
     productSlug: "erexio",
   },
   {
-    question: "Who is Erexio designed for?",
+    question: "What are the ingredients in Erexio Gel?",
     answer:
-      "Erexio is designed for adult men. If you are allergic to any of the listed ingredients or have specific medical conditions, please consult a healthcare professional before use.",
+      "Erexio contains Ethanol, Aqua, Glycerin, Propylene Glycol, Carbomer, and Potassium Hydroxide. For the complete ingredient list, please refer to the enclosed instructions on the product packaging.",
+    productSlug: "erexio",
+  },
+  {
+    question: "Who is Erexio Gel designed for?",
+    answer:
+      "Erexio Gel is intended for adult men only and is for external use only. If you have underlying medical conditions or are allergic to any of the listed ingredients, consult a healthcare professional before use.",
     productSlug: "erexio",
   },
 ];
