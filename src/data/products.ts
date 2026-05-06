@@ -183,7 +183,7 @@ export const products: Product[] = [
     description:
       "A fast-acting topical gel designed to support stronger, longer-lasting performance when you need it. Easy to use and formulated for convenient application.",
     mrp: 700,
-    salePrice: 700,
+    salePrice: 599,
     currency: "INR",
     unit: "15 gm",
     form: "gel",
