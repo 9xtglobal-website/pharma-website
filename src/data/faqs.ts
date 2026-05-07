@@ -102,7 +102,7 @@ export const faqs: FAQ[] = [
   {
     question: "Where is Ulida manufactured?",
     answer:
-      "Ulida is manufactured by Bangalore Pharmaceutical & Research Laboratory (P) Ltd. in Karnataka, India, and marketed by AMT Pharma Pvt. Ltd. The formulation is licensed from SUGANT SAS, France.",
+      "Ulida is marketed by 9X Pharma. The formulation is licensed from SUGANT SAS, France.",
     productSlug: "ulida",
   },
 
