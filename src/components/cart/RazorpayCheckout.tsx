@@ -58,9 +58,8 @@ export default function RazorpayCheckout({
   const [opening, setOpening] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const isKeyPlaceholder = RAZORPAY_KEY_ID === "rzp_test_PLACEHOLDER";
-  const isApiPlaceholder = API_BASE_URL === "API_BASE_URL_PLACEHOLDER";
-  const isPlaceholder = isKeyPlaceholder || isApiPlaceholder;
+  // Placeholder check removed once values are wired in. Re-add if needed during dev.
+  const isPlaceholder = false;
 
   // Load Razorpay's checkout.js once
   useEffect(() => {
@@ -200,8 +199,6 @@ export default function RazorpayCheckout({
       <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
         <p className="font-semibold">Razorpay setup pending</p>
         <p className="mt-1 text-xs leading-relaxed">
-          {isKeyPlaceholder && "Razorpay key is not configured. "}
-          {isApiPlaceholder && "Backend API URL is not configured. "}
           Please use Direct UPI, COD, or WhatsApp checkout for now.
         </p>
       </div>
