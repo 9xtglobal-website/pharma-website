@@ -123,9 +123,12 @@ export default function CartDrawer() {
     notifyOrder({ stage: "paid_upi", orderId, delivery, items, subtotal });
   };
 
-  const handleRazorpayPaid = (paymentId: string) => {
+  const handleRazorpayPaid = (paymentId: string, verified: boolean) => {
     notifyOrder({ stage: "paid_upi", orderId, delivery, items, subtotal });
-    const message = `Payment confirmed via Razorpay ✅\n\nOrder ID: ${orderId}\nPayment ID: ${paymentId}\n\n— Delivery —\n${deliveryBlock}\n\n— Items —\n${orderLines}\n\nTotal: ${formatCurrency(
+    const verifyTag = verified
+      ? "✅ Server-verified"
+      : "⚠️ NOT server-verified — please confirm in Razorpay dashboard";
+    const message = `Payment confirmed via Razorpay\n${verifyTag}\n\nOrder ID: ${orderId}\nPayment ID: ${paymentId}\n\n— Delivery —\n${deliveryBlock}\n\n— Items —\n${orderLines}\n\nTotal: ${formatCurrency(
       subtotal
     )}\n\nPlease share tracking once shipped.`;
     window.open(getWhatsAppUrl(WHATSAPP_NUMBER, message), "_blank");

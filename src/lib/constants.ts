@@ -23,8 +23,12 @@ export const FORMSUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${SALES_EMAIL}`;
 // Razorpay payment gateway config.
 // Sign up free at https://dashboard.razorpay.com — under Settings → API Keys generate
 // a "Test Mode" key first (starts with "rzp_test_"), then switch to "Live Mode" after KYC.
-// Only the KEY ID is needed in the frontend (the Key Secret stays in your dashboard).
+// Only the KEY ID is needed in the frontend (the Key Secret stays in the Cloudflare Worker).
 // TODO: Replace with the real Razorpay Key ID before going live.
 export const RAZORPAY_KEY_ID = "rzp_test_PLACEHOLDER";
 export const RAZORPAY_BRAND_COLOR = "#1e3a5f"; // matches brand-navy
 export const RAZORPAY_CHECKOUT_SCRIPT = "https://checkout.razorpay.com/v1/checkout.js";
+
+// Backend API (Cloudflare Worker) — deploy from /worker.
+// TODO: Replace with the real Worker URL after `wrangler deploy` (e.g. https://9xpharma-api.your-subdomain.workers.dev or https://api.9xtg.com)
+export const API_BASE_URL = "API_BASE_URL_PLACEHOLDER";

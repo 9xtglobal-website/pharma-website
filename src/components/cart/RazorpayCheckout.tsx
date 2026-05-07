@@ -6,6 +6,7 @@ import {
   RAZORPAY_KEY_ID,
   RAZORPAY_BRAND_COLOR,
   RAZORPAY_CHECKOUT_SCRIPT,
+  API_BASE_URL,
   WHATSAPP_NUMBER,
 } from "@/lib/constants";
 import { formatCurrency, getWhatsAppUrl } from "@/lib/utils";
@@ -14,8 +15,8 @@ import type { DeliveryDetails } from "./DeliveryForm";
 // Minimal Razorpay typing — enough for this integration.
 type RazorpayPaymentResponse = {
   razorpay_payment_id: string;
-  razorpay_order_id?: string;
-  razorpay_signature?: string;
+  razorpay_order_id: string;
+  razorpay_signature: string;
 };
 type RazorpayOptions = {
   key: string;
@@ -23,6 +24,7 @@ type RazorpayOptions = {
   currency: string;
   name: string;
   description?: string;
+  order_id?: string;
   image?: string;
   prefill?: { name?: string; email?: string; contact?: string };
   notes?: Record<string, string>;
@@ -40,7 +42,7 @@ declare global {
 interface RazorpayCheckoutProps {
   delivery: DeliveryDetails;
   orderId: string;
-  onPaid: (paymentId: string) => void;
+  onPaid: (paymentId: string, verified: boolean) => void;
   onDismiss?: () => void;
 }
 
@@ -54,8 +56,11 @@ export default function RazorpayCheckout({
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [scriptError, setScriptError] = useState(false);
   const [opening, setOpening] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const isPlaceholder = RAZORPAY_KEY_ID === "rzp_test_PLACEHOLDER";
+  const isKeyPlaceholder = RAZORPAY_KEY_ID === "rzp_test_PLACEHOLDER";
+  const isApiPlaceholder = API_BASE_URL === "API_BASE_URL_PLACEHOLDER";
+  const isPlaceholder = isKeyPlaceholder || isApiPlaceholder;
 
   // Load Razorpay's checkout.js once
   useEffect(() => {
@@ -84,19 +89,62 @@ export default function RazorpayCheckout({
     .map((i) => `${i.product.name} x${i.quantity}`)
     .join(", ");
 
-  const openCheckout = () => {
+  const openCheckout = async () => {
     if (!window.Razorpay) {
       setScriptError(true);
       return;
     }
     setOpening(true);
+    setErrorMsg(null);
 
+    // 1. Create a Razorpay order via the Cloudflare Worker
+    let rzpOrder: { id: string } | null = null;
+    try {
+      const resp = await fetch(`${API_BASE_URL}/api/create-order`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: subtotal,
+          currency: "INR",
+          receipt: orderId,
+          notes: {
+            order_id: orderId,
+            customer_name: delivery.name,
+            customer_phone: delivery.phone,
+            address: `${delivery.address}, ${delivery.city}, ${delivery.state} - ${delivery.pincode}`,
+            items: itemsSummary.slice(0, 250),
+          },
+        }),
+      });
+      if (!resp.ok) {
+        const text = await resp.text();
+        throw new Error(`create-order failed: ${resp.status} ${text}`);
+      }
+      rzpOrder = await resp.json();
+    } catch (err) {
+      setOpening(false);
+      setErrorMsg(
+        "Couldn't reach payment server. Please try again or use another payment method."
+      );
+      // eslint-disable-next-line no-console
+      console.error("Razorpay create-order failed", err);
+      return;
+    }
+
+    if (!rzpOrder?.id) {
+      setOpening(false);
+      setErrorMsg("Payment server returned an invalid response.");
+      return;
+    }
+
+    // 2. Open Razorpay modal with the server-created order_id
     const rzp = new window.Razorpay({
       key: RAZORPAY_KEY_ID,
-      amount: subtotal * 100, // Razorpay expects paise
+      amount: subtotal * 100,
       currency: "INR",
       name: "9X Pharma",
       description: `Order ${orderId} — ${itemsSummary}`.slice(0, 250),
+      order_id: rzpOrder.id,
       prefill: {
         name: delivery.name,
         email: delivery.email || undefined,
@@ -114,9 +162,27 @@ export default function RazorpayCheckout({
           onDismiss?.();
         },
       },
-      handler: (response) => {
+      handler: async (response) => {
         setOpening(false);
-        onPaid(response.razorpay_payment_id);
+        // 3. Verify the payment signature on the server
+        try {
+          const verifyResp = await fetch(`${API_BASE_URL}/api/verify-payment`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            }),
+          });
+          const verifyData = await verifyResp.json();
+          onPaid(response.razorpay_payment_id, Boolean(verifyData.valid));
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.error("Razorpay verify failed", err);
+          // Still notify with verified=false; the merchant can manually check the dashboard.
+          onPaid(response.razorpay_payment_id, false);
+        }
       },
     });
 
@@ -134,8 +200,9 @@ export default function RazorpayCheckout({
       <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
         <p className="font-semibold">Razorpay setup pending</p>
         <p className="mt-1 text-xs leading-relaxed">
-          Razorpay isn&apos;t configured yet. Please use Direct UPI, COD, or
-          WhatsApp checkout for now.
+          {isKeyPlaceholder && "Razorpay key is not configured. "}
+          {isApiPlaceholder && "Backend API URL is not configured. "}
+          Please use Direct UPI, COD, or WhatsApp checkout for now.
         </p>
       </div>
     );
@@ -191,8 +258,19 @@ export default function RazorpayCheckout({
               Pay {formatCurrency(subtotal)}
             </>
           )}
-          {scriptLoaded && opening && "Opening…"}
+          {scriptLoaded && opening && (
+            <>
+              <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+              Opening…
+            </>
+          )}
         </button>
+
+        {errorMsg && (
+          <p className="mt-2 rounded-lg bg-red-50 p-2 text-xs text-red-700">
+            {errorMsg}
+          </p>
+        )}
 
         {scriptError && (
           <a
@@ -206,7 +284,7 @@ export default function RazorpayCheckout({
         )}
 
         <p className="mt-3 text-center text-[11px] text-brand-grey-400">
-          🔒 Secured by Razorpay · 256-bit SSL · PCI-DSS compliant
+          🔒 Secured by Razorpay · Server-verified · 256-bit SSL
         </p>
       </div>
     </div>

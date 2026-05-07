@@ -1,0 +1,18 @@
+name = "9xpharma-api"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# Public vars (non-secret) — edit these as needed.
+# ALLOWED_ORIGINS controls CORS — only these origins can call the API.
+[vars]
+ALLOWED_ORIGINS = "https://pharma.9xtg.com,https://9xtglobal-website.github.io,http://localhost:3000,http://localhost:3459"
+
+# Secrets are NOT defined here — set them via the CLI:
+#   wrangler secret put RAZORPAY_KEY_ID
+#   wrangler secret put RAZORPAY_KEY_SECRET
+
+# (Optional) Custom domain mapping. After Worker is deployed, you can map it
+# to api.9xtg.com via Cloudflare dashboard (or uncomment + edit below).
+# [[routes]]
+# pattern = "api.9xtg.com/*"
+# zone_name = "9xtg.com"
