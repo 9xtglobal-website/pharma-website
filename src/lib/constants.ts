@@ -19,3 +19,12 @@ export const UPI_MERCHANT_NAME = "9X Pharma";
 // email lands at SALES_EMAIL — click the link, then all future submissions go through).
 export const SALES_EMAIL = "sales@9xtg.com";
 export const FORMSUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${SALES_EMAIL}`;
+
+// Razorpay payment gateway config.
+// Sign up free at https://dashboard.razorpay.com — under Settings → API Keys generate
+// a "Test Mode" key first (starts with "rzp_test_"), then switch to "Live Mode" after KYC.
+// Only the KEY ID is needed in the frontend (the Key Secret stays in your dashboard).
+// TODO: Replace with the real Razorpay Key ID before going live.
+export const RAZORPAY_KEY_ID = "rzp_test_PLACEHOLDER";
+export const RAZORPAY_BRAND_COLOR = "#1e3a5f"; // matches brand-navy
+export const RAZORPAY_CHECKOUT_SCRIPT = "https://checkout.razorpay.com/v1/checkout.js";

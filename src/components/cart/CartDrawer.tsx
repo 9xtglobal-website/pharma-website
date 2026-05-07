@@ -10,12 +10,13 @@ import TrustBadges from "@/components/ui/TrustBadges";
 import CartItem from "./CartItem";
 import SuggestedAddOns from "./SuggestedAddOns";
 import UpiCheckout from "./UpiCheckout";
+import RazorpayCheckout from "./RazorpayCheckout";
 import DeliveryForm, {
   DeliveryDetails,
   emptyDeliveryDetails,
 } from "./DeliveryForm";
 
-type Step = "cart" | "delivery" | "payment" | "upi";
+type Step = "cart" | "delivery" | "payment" | "upi" | "razorpay-success";
 
 const STORAGE_KEY = "9xpharma-delivery";
 
@@ -120,6 +121,16 @@ export default function CartDrawer() {
 
   const handleUpiPaid = () => {
     notifyOrder({ stage: "paid_upi", orderId, delivery, items, subtotal });
+  };
+
+  const handleRazorpayPaid = (paymentId: string) => {
+    notifyOrder({ stage: "paid_upi", orderId, delivery, items, subtotal });
+    const message = `Payment confirmed via Razorpay ✅\n\nOrder ID: ${orderId}\nPayment ID: ${paymentId}\n\n— Delivery —\n${deliveryBlock}\n\n— Items —\n${orderLines}\n\nTotal: ${formatCurrency(
+      subtotal
+    )}\n\nPlease share tracking once shipped.`;
+    window.open(getWhatsAppUrl(WHATSAPP_NUMBER, message), "_blank");
+    clearCart();
+    setStep("razorpay-success");
   };
 
   // Render ------------------------------------------------------------------
@@ -264,27 +275,36 @@ export default function CartDrawer() {
                 </p>
               </div>
 
-              {/* UPI button */}
+              {/* Primary: Razorpay (cards / UPI / netbanking / wallets / EMI) */}
+              <RazorpayCheckout
+                delivery={delivery}
+                orderId={orderId}
+                onPaid={handleRazorpayPaid}
+              />
+
+              {/* Divider */}
+              <div className="flex items-center gap-3">
+                <span className="h-px flex-1 bg-brand-grey-200" />
+                <span className="text-[11px] uppercase tracking-wider text-brand-grey-400">
+                  or other options
+                </span>
+                <span className="h-px flex-1 bg-brand-grey-200" />
+              </div>
+
+              {/* Direct UPI (no Razorpay fee) */}
               <button
                 onClick={() => setStep("upi")}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#5f259f] via-[#0f9d58] to-[#00aaff] px-5 py-3.5 text-base font-semibold text-white shadow-lg transition-all hover:shadow-xl active:scale-[0.98]"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-brand-grey-200 bg-white px-5 py-3 text-sm font-semibold text-brand-grey-700 transition-colors hover:border-brand-navy hover:bg-brand-grey-50 active:scale-[0.98]"
               >
                 <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path
-                    d="M2.25 8.25h19.5v7.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25v-7.5z"
-                    opacity="0.2"
-                  />
                   <path
                     fillRule="evenodd"
                     d="M2.25 6.75A2.25 2.25 0 014.5 4.5h15a2.25 2.25 0 012.25 2.25v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75zm2.25-.75a.75.75 0 00-.75.75v1.5h16.5v-1.5a.75.75 0 00-.75-.75h-15zM3.75 9.75v7.5c0 .414.336.75.75.75h15a.75.75 0 00.75-.75v-7.5h-16.5z"
                     clipRule="evenodd"
                   />
                 </svg>
-                Pay {formatCurrency(subtotal)} via UPI
+                Direct UPI ({formatCurrency(subtotal)})
               </button>
-              <p className="-mt-2 text-center text-[11px] text-brand-grey-400">
-                GPay · PhonePe · Paytm · CRED · BHIM
-              </p>
 
               <button onClick={handleCodOrder} className="btn-primary w-full">
                 Cash on Delivery / Bank Transfer
@@ -303,6 +323,41 @@ export default function CartDrawer() {
                 className="w-full pt-1 text-center text-sm text-brand-grey-500 hover:text-brand-grey-700"
               >
                 ← Back
+              </button>
+            </div>
+          )}
+
+          {/* Razorpay success */}
+          {step === "razorpay-success" && (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-brand-green-pale">
+                <svg
+                  className="h-8 w-8 text-brand-green"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2.5}
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.5 12.75l6 6 9-13.5"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-lg font-bold text-brand-navy">Payment Successful</h3>
+              <p className="mt-1 text-sm text-brand-grey-500">
+                Thank you for your order!
+              </p>
+              <p className="mt-3 text-xs text-brand-grey-400">
+                Order ID: <span className="font-mono">{orderId}</span>
+              </p>
+              <p className="mt-3 max-w-xs text-xs text-brand-grey-500">
+                You&apos;ll receive a WhatsApp confirmation shortly.
+                We&apos;ll ship within 24 hours.
+              </p>
+              <button onClick={closeCart} className="btn-primary mt-6">
+                Continue Shopping
               </button>
             </div>
           )}
