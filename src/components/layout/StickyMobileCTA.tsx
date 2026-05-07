@@ -4,9 +4,11 @@ import { useCart } from "@/context/CartContext";
 import { formatCurrency } from "@/lib/utils";
 
 export default function StickyMobileCTA() {
-  const { totalItems, subtotal, toggleCart } = useCart();
+  const { totalItems, subtotal, toggleCart, isOpen } = useCart();
 
-  if (totalItems === 0) return null;
+  // Hide when cart is empty OR when the cart drawer is already open
+  // (otherwise it sits on top of the drawer's checkout button on mobile)
+  if (totalItems === 0 || isOpen) return null;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-brand-grey-200 bg-white p-3 shadow-[0_-4px_12px_rgba(0,0,0,0.1)] md:hidden">

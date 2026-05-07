@@ -2,8 +2,14 @@
 
 import { WHATSAPP_NUMBER, WHATSAPP_DEFAULT_MESSAGE } from "@/lib/constants";
 import { getWhatsAppUrl } from "@/lib/utils";
+import { useCart } from "@/context/CartContext";
 
 export default function WhatsAppButton() {
+  const { isOpen } = useCart();
+
+  // Hide when cart drawer is open so it doesn't sit on top of the checkout
+  if (isOpen) return null;
+
   return (
     <a
       href={getWhatsAppUrl(WHATSAPP_NUMBER, WHATSAPP_DEFAULT_MESSAGE)}
