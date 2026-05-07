@@ -10,10 +10,6 @@ export const DELIVERY_DAYS = "3-5 business days";
 export const COD_AVAILABLE = true;
 export const RETURN_POLICY_DAYS = 7;
 
-// UPI payment config — used by the UPI deep-link checkout.
-export const UPI_VPA = "nithincgovindan@okaxis";
-export const UPI_MERCHANT_NAME = "9X Pharma";
-
 // Email address that receives order notifications.
 // FormSubmit.co requires the FIRST submission to be confirmed (a verification
 // email lands at SALES_EMAIL — click the link, then all future submissions go through).

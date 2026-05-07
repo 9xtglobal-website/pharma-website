@@ -9,14 +9,13 @@ import FreeShippingProgress from "@/components/ui/FreeShippingProgress";
 import TrustBadges from "@/components/ui/TrustBadges";
 import CartItem from "./CartItem";
 import SuggestedAddOns from "./SuggestedAddOns";
-import UpiCheckout from "./UpiCheckout";
 import RazorpayCheckout from "./RazorpayCheckout";
 import DeliveryForm, {
   DeliveryDetails,
   emptyDeliveryDetails,
 } from "./DeliveryForm";
 
-type Step = "cart" | "delivery" | "payment" | "upi" | "razorpay-success";
+type Step = "cart" | "delivery" | "payment" | "razorpay-success";
 
 const STORAGE_KEY = "9xpharma-delivery";
 
@@ -119,10 +118,6 @@ export default function CartDrawer() {
     closeCart();
   };
 
-  const handleUpiPaid = () => {
-    notifyOrder({ stage: "paid_upi", orderId, delivery, items, subtotal });
-  };
-
   const handleRazorpayPaid = (paymentId: string, verified: boolean) => {
     notifyOrder({ stage: "paid_upi", orderId, delivery, items, subtotal });
     const verifyTag = verified
@@ -154,7 +149,6 @@ export default function CartDrawer() {
             {step === "cart" && `Your Cart (${totalItems})`}
             {step === "delivery" && "Delivery Details"}
             {step === "payment" && "Choose Payment"}
-            {step === "upi" && "UPI Payment"}
           </h2>
           <button
             onClick={closeCart}
@@ -294,21 +288,6 @@ export default function CartDrawer() {
                 <span className="h-px flex-1 bg-brand-grey-200" />
               </div>
 
-              {/* Direct UPI (no Razorpay fee) */}
-              <button
-                onClick={() => setStep("upi")}
-                className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-brand-grey-200 bg-white px-5 py-3 text-sm font-semibold text-brand-grey-700 transition-colors hover:border-brand-navy hover:bg-brand-grey-50 active:scale-[0.98]"
-              >
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path
-                    fillRule="evenodd"
-                    d="M2.25 6.75A2.25 2.25 0 014.5 4.5h15a2.25 2.25 0 012.25 2.25v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75zm2.25-.75a.75.75 0 00-.75.75v1.5h16.5v-1.5a.75.75 0 00-.75-.75h-15zM3.75 9.75v7.5c0 .414.336.75.75.75h15a.75.75 0 00.75-.75v-7.5h-16.5z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Direct UPI ({formatCurrency(subtotal)})
-              </button>
-
               <button onClick={handleCodOrder} className="btn-primary w-full">
                 Cash on Delivery / Bank Transfer
               </button>
@@ -365,28 +344,6 @@ export default function CartDrawer() {
             </div>
           )}
 
-          {/* UPI payment step */}
-          {step === "upi" && (
-            <div className="py-4">
-              <div className="mb-3 flex items-center justify-between">
-                <span className="text-xs text-brand-grey-500">
-                  Step 3 of 3 — UPI payment
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setStep("payment")}
-                  className="text-xs text-brand-grey-500 hover:text-brand-grey-700"
-                >
-                  ← Other methods
-                </button>
-              </div>
-              <UpiCheckout
-                delivery={delivery}
-                onClose={closeCart}
-                onPaid={handleUpiPaid}
-              />
-            </div>
-          )}
         </div>
 
         {/* Footer — only on cart step */}
