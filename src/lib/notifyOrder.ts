@@ -3,7 +3,12 @@ import type { DeliveryDetails } from "@/components/cart/DeliveryForm";
 import { FORMSUBMIT_ENDPOINT } from "./constants";
 import { formatCurrency } from "./utils";
 
-export type OrderStage = "started" | "paid_upi" | "cod" | "whatsapp";
+/**
+ * Order stages — only fired for confirmed orders:
+ *   - "razorpay_paid"   : Customer completed online payment via Razorpay
+ *   - "cod"             : Customer chose Cash on Delivery / Bank Transfer
+ */
+export type OrderStage = "razorpay_paid" | "cod";
 
 interface NotifyArgs {
   stage: OrderStage;
@@ -11,27 +16,47 @@ interface NotifyArgs {
   delivery: DeliveryDetails;
   items: CartItem[];
   subtotal: number;
+  /** Razorpay payment ID (only present for stage = "razorpay_paid") */
+  paymentId?: string;
+  /** True only when server HMAC-verified the Razorpay signature */
+  verified?: boolean;
 }
 
-const STAGE_SUBJECT: Record<OrderStage, string> = {
-  started: "🛒 New order started — 9X Pharma",
-  paid_upi: "✅ UPI Paid — Order ready to ship — 9X Pharma",
-  cod: "📦 New COD / Bank Transfer order — 9X Pharma",
-  whatsapp: "💬 WhatsApp order initiated — 9X Pharma",
-};
+interface OrderMeta {
+  subject: string;
+  paymentMode: string;
+  paymentStatus: string;
+}
+
+function buildMeta(args: NotifyArgs): OrderMeta {
+  switch (args.stage) {
+    case "razorpay_paid":
+      return {
+        subject: args.verified
+          ? "✅ PAID (verified) — New order — 9X Pharma"
+          : "⚠️ PAID (NOT verified) — New order — 9X Pharma",
+        paymentMode: "Razorpay (Online)",
+        paymentStatus: args.verified
+          ? "Paid ✅ — Server-verified signature"
+          : "Paid ⚠️ — Signature NOT verified — please confirm in Razorpay dashboard before shipping",
+      };
+    case "cod":
+      return {
+        subject: "📦 New COD / Bank Transfer order — 9X Pharma",
+        paymentMode: "Cash on Delivery / Bank Transfer",
+        paymentStatus: "Pending — collect on delivery or confirm bank transfer",
+      };
+  }
+}
 
 /**
  * Sends order details to SALES_EMAIL via FormSubmit.co (no backend needed).
- * Fails silently — we don't want a dead email service to block the user from
- * completing their order.
+ * Fails silently — never block the order completion because of email failure.
  */
-export async function notifyOrder({
-  stage,
-  orderId,
-  delivery,
-  items,
-  subtotal,
-}: NotifyArgs): Promise<void> {
+export async function notifyOrder(args: NotifyArgs): Promise<void> {
+  const { orderId, delivery, items, subtotal, paymentId } = args;
+  const meta = buildMeta(args);
+
   const itemsText = items
     .map(
       (i) =>
@@ -41,12 +66,13 @@ export async function notifyOrder({
     )
     .join(" | ");
 
-  const payload = {
-    _subject: STAGE_SUBJECT[stage],
+  const payload: Record<string, string> = {
+    _subject: meta.subject,
     _captcha: "false",
     _template: "table",
     "Order ID": orderId,
-    "Stage": stage,
+    "Payment Mode": meta.paymentMode,
+    "Payment Status": meta.paymentStatus,
     "Customer Name": delivery.name,
     "Phone": delivery.phone,
     "Email": delivery.email || "(not provided)",
@@ -62,6 +88,10 @@ export async function notifyOrder({
     }),
   };
 
+  if (paymentId) {
+    payload["Razorpay Payment ID"] = paymentId;
+  }
+
   try {
     await fetch(FORMSUBMIT_ENDPOINT, {
       method: "POST",
@@ -72,7 +102,6 @@ export async function notifyOrder({
       body: JSON.stringify(payload),
     });
   } catch (err) {
-    // Swallow errors — never block checkout because of email failure.
     // eslint-disable-next-line no-console
     console.warn("notifyOrder failed", err);
   }
