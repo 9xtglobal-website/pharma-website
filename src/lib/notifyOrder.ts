@@ -15,7 +15,10 @@ interface NotifyArgs {
   orderId: string;
   delivery: DeliveryDetails;
   items: CartItem[];
-  subtotal: number;
+  /** Cart subtotal before any payment-mode adjustment */
+  subtotalBase: number;
+  /** Final amount the customer is paying (after online discount or +COD fee) */
+  totalCharged: number;
   /** Razorpay payment ID (only present for stage = "razorpay_paid") */
   paymentId?: string;
   /** True only when server HMAC-verified the Razorpay signature */
@@ -54,7 +57,14 @@ function buildMeta(args: NotifyArgs): OrderMeta {
  * Fails silently — never block the order completion because of email failure.
  */
 export async function notifyOrder(args: NotifyArgs): Promise<void> {
-  const { orderId, delivery, items, subtotal, paymentId } = args;
+  const {
+    orderId,
+    delivery,
+    items,
+    subtotalBase,
+    totalCharged,
+    paymentId,
+  } = args;
   const meta = buildMeta(args);
 
   const itemsText = items
@@ -65,6 +75,14 @@ export async function notifyOrder(args: NotifyArgs): Promise<void> {
         )}`
     )
     .join(" | ");
+
+  const adjustment = totalCharged - subtotalBase;
+  const adjustmentLabel =
+    adjustment === 0
+      ? "(no adjustment)"
+      : adjustment > 0
+        ? `+ ${formatCurrency(adjustment)} (COD handling fee)`
+        : `- ${formatCurrency(Math.abs(adjustment))} (online payment discount)`;
 
   const payload: Record<string, string> = {
     _subject: meta.subject,
@@ -82,7 +100,9 @@ export async function notifyOrder(args: NotifyArgs): Promise<void> {
     "Pincode": delivery.pincode,
     "Notes": delivery.notes || "(none)",
     "Items": itemsText,
-    "Total": formatCurrency(subtotal),
+    "Cart Subtotal": formatCurrency(subtotalBase),
+    "Adjustment": adjustmentLabel,
+    "Total Charged": formatCurrency(totalCharged),
     "Submitted at": new Date().toLocaleString("en-IN", {
       timeZone: "Asia/Kolkata",
     }),

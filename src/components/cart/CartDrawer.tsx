@@ -3,7 +3,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { formatCurrency, getWhatsAppUrl } from "@/lib/utils";
-import { WHATSAPP_NUMBER } from "@/lib/constants";
+import {
+  WHATSAPP_NUMBER,
+  ONLINE_PAYMENT_DISCOUNT,
+  COD_HANDLING_FEE,
+} from "@/lib/constants";
 import { notifyOrder } from "@/lib/notifyOrder";
 import FreeShippingProgress from "@/components/ui/FreeShippingProgress";
 import TrustBadges from "@/components/ui/TrustBadges";
@@ -77,6 +81,10 @@ export default function CartDrawer() {
     setStep("payment");
   };
 
+  // Payment-mode adjusted totals
+  const onlineTotal = Math.max(0, subtotal - ONLINE_PAYMENT_DISCOUNT);
+  const codTotal = subtotal + COD_HANDLING_FEE;
+
   const orderLines = items
     .map(
       (i) =>
@@ -99,10 +107,15 @@ export default function CartDrawer() {
       orderId,
       delivery,
       items,
-      subtotal,
+      subtotalBase: subtotal,
+      totalCharged: codTotal,
     });
-    const message = `New Order ${orderId} (Cash on Delivery / Bank Transfer)\n\nPayment Mode: Cash on Delivery / Bank Transfer\nPayment Status: Pending — to be collected\n\n— Delivery Details —\n${deliveryBlock}\n\n— Order —\n${orderLines}\n\nTotal: ${formatCurrency(
+    const message = `New Order ${orderId} (Cash on Delivery / Bank Transfer)\n\nPayment Mode: Cash on Delivery / Bank Transfer\nPayment Status: Pending — to be collected\n\n— Delivery Details —\n${deliveryBlock}\n\n— Order —\n${orderLines}\n\nCart Subtotal: ${formatCurrency(
       subtotal
+    )}\nCOD Handling Fee: + ${formatCurrency(
+      COD_HANDLING_FEE
+    )}\nTotal Payable: ${formatCurrency(
+      codTotal
     )}\n\nPlease confirm payment method and tracking.`;
     window.open(getWhatsAppUrl(WHATSAPP_NUMBER, message), "_blank");
     clearCart();
@@ -116,7 +129,8 @@ export default function CartDrawer() {
       orderId,
       delivery,
       items,
-      subtotal,
+      subtotalBase: subtotal,
+      totalCharged: onlineTotal,
       paymentId,
       verified,
     });
@@ -125,8 +139,12 @@ export default function CartDrawer() {
       : "⚠️ NOT server-verified — please confirm in Razorpay dashboard";
     const message = `Payment confirmed via Razorpay\n${verifyTag}\n\nOrder ID: ${orderId}\nPayment ID: ${paymentId}\nPayment Mode: Razorpay (Online)\nPayment Status: ${
       verified ? "Paid — Verified" : "Paid — NOT Verified"
-    }\n\n— Delivery —\n${deliveryBlock}\n\n— Items —\n${orderLines}\n\nTotal: ${formatCurrency(
+    }\n\n— Delivery —\n${deliveryBlock}\n\n— Items —\n${orderLines}\n\nCart Subtotal: ${formatCurrency(
       subtotal
+    )}\nOnline Discount: - ${formatCurrency(
+      ONLINE_PAYMENT_DISCOUNT
+    )}\nTotal Paid: ${formatCurrency(
+      onlineTotal
     )}\n\nPlease share tracking once shipped.`;
     window.open(getWhatsAppUrl(WHATSAPP_NUMBER, message), "_blank");
     clearCart();
@@ -274,25 +292,65 @@ export default function CartDrawer() {
                 </p>
               </div>
 
+              {/* "Save by paying online" callout */}
+              <div className="rounded-xl border border-brand-green/30 bg-brand-green-pale px-4 py-3">
+                <div className="flex items-center gap-2">
+                  <svg
+                    className="h-5 w-5 shrink-0 text-brand-green"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <p className="text-sm font-semibold text-brand-green-dark">
+                    Pay online & save {formatCurrency(ONLINE_PAYMENT_DISCOUNT)}
+                  </p>
+                </div>
+                <p className="mt-1 text-xs text-brand-grey-600">
+                  Choose UPI, cards or netbanking below for an instant discount.
+                </p>
+              </div>
+
               {/* Primary: Razorpay (cards / UPI / netbanking / wallets / EMI) */}
               <RazorpayCheckout
                 delivery={delivery}
                 orderId={orderId}
+                amount={onlineTotal}
                 onPaid={handleRazorpayPaid}
               />
+              <div className="-mt-1 flex items-center justify-center gap-2 text-xs">
+                <span className="text-brand-grey-400 line-through">
+                  {formatCurrency(subtotal)}
+                </span>
+                <span className="font-semibold text-brand-green-dark">
+                  {formatCurrency(onlineTotal)}
+                </span>
+                <span className="rounded-md bg-brand-green-pale px-1.5 py-0.5 font-medium text-brand-green-dark">
+                  Save {formatCurrency(ONLINE_PAYMENT_DISCOUNT)}
+                </span>
+              </div>
 
               {/* Divider */}
               <div className="flex items-center gap-3">
                 <span className="h-px flex-1 bg-brand-grey-200" />
                 <span className="text-[11px] uppercase tracking-wider text-brand-grey-400">
-                  or other options
+                  or
                 </span>
                 <span className="h-px flex-1 bg-brand-grey-200" />
               </div>
 
               <button onClick={handleCodOrder} className="btn-primary w-full">
-                Cash on Delivery / Bank Transfer
+                Cash on Delivery — {formatCurrency(codTotal)}
               </button>
+              <p className="-mt-1 text-center text-[11px] text-brand-grey-500">
+                Includes {formatCurrency(COD_HANDLING_FEE)} handling fee
+              </p>
 
               <p className="text-center text-[11px] text-brand-grey-400">
                 Need help? Tap the WhatsApp button at the bottom-right of the page.

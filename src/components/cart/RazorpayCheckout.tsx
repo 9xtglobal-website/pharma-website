@@ -42,6 +42,8 @@ declare global {
 interface RazorpayCheckoutProps {
   delivery: DeliveryDetails;
   orderId: string;
+  /** Final amount to charge (after any discount) in rupees */
+  amount: number;
   onPaid: (paymentId: string, verified: boolean) => void;
   onDismiss?: () => void;
 }
@@ -49,10 +51,11 @@ interface RazorpayCheckoutProps {
 export default function RazorpayCheckout({
   delivery,
   orderId,
+  amount,
   onPaid,
   onDismiss,
 }: RazorpayCheckoutProps) {
-  const { items, subtotal } = useCart();
+  const { items } = useCart();
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [scriptError, setScriptError] = useState(false);
   const [opening, setOpening] = useState(false);
@@ -103,7 +106,7 @@ export default function RazorpayCheckout({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          amount: subtotal,
+          amount: amount,
           currency: "INR",
           receipt: orderId,
           notes: {
@@ -139,7 +142,7 @@ export default function RazorpayCheckout({
     // 2. Open Razorpay modal with the server-created order_id
     const rzp = new window.Razorpay({
       key: RAZORPAY_KEY_ID,
-      amount: subtotal * 100,
+      amount: amount * 100,
       currency: "INR",
       name: "9X Pharma",
       description: `Order ${orderId} — ${itemsSummary}`.slice(0, 250),
@@ -190,7 +193,7 @@ export default function RazorpayCheckout({
 
   // Build a fallback WhatsApp message in case Razorpay fails to load
   const fallbackMessage = `Hi, Razorpay didn't load on my browser. I want to place order ${orderId}.\n\nTotal: ${formatCurrency(
-    subtotal
+    amount
   )}\n\nPlease share alternative payment options.`;
   const fallbackWhatsapp = getWhatsAppUrl(WHATSAPP_NUMBER, fallbackMessage);
 
@@ -252,7 +255,7 @@ export default function RazorpayCheckout({
                   d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
                 />
               </svg>
-              Pay {formatCurrency(subtotal)}
+              Pay {formatCurrency(amount)}
             </>
           )}
           {scriptLoaded && opening && (

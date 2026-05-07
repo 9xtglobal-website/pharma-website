@@ -1,6 +1,13 @@
 export const SITE_NAME = "9X Pharma";
 export const SITE_TAGLINE = "Science-Backed Nutraceuticals for Modern Wellness";
 export const FREE_SHIPPING_THRESHOLD = 999;
+
+// Payment incentives — reduce return-to-origin (RTO) losses on COD by:
+//   1. Discounting online payments (Razorpay)
+//   2. Charging a handling fee for COD orders
+// Tweak these numbers freely; nothing else needs to change.
+export const ONLINE_PAYMENT_DISCOUNT = 50; // ₹ off subtotal when paying online
+export const COD_HANDLING_FEE = 100; // ₹ added to subtotal for COD/Bank Transfer
 export const WHATSAPP_NUMBER = "918590898080";
 export const WHATSAPP_DEFAULT_MESSAGE = "Hi, I'd like to know more about your products.";
 export const SUPPLEMENT_DISCLAIMER =
