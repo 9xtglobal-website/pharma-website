@@ -21,7 +21,7 @@ export default function Hero() {
 
           {/* Headline */}
           <h1 className="text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl xl:text-6xl">
-            Science-Backed Wellness{" "}
+            Clear-Label Wellness{" "}
             <span className="bg-gradient-to-r from-brand-green-light to-brand-green bg-clip-text text-transparent">
               for Every Day
             </span>
@@ -29,8 +29,8 @@ export default function Hero() {
 
           {/* Subheadline */}
           <p className="mt-5 text-base leading-relaxed text-white/70 sm:text-lg lg:text-xl">
-            Premium nutraceutical formulations designed to support your daily wellness routine.
-            From vitality to restful sleep — choose what your body needs.
+            Nutraceutical formulations with listed ingredients, clear usage directions,
+            and simple wellness goals so you can choose with more confidence.
           </p>
 
           {/* CTAs */}
@@ -50,8 +50,8 @@ export default function Hero() {
           <div className="mt-12 grid grid-cols-3 gap-4 border-t border-white/10 pt-8">
             {[
               { stat: "3+", label: "Wellness Products" },
-              { stat: "GMP", label: "Certified Manufacturing" },
-              { stat: "100%", label: "Vegetarian" },
+              { stat: "Clear", label: "Ingredient Labels" },
+              { stat: "Veg", label: "Vegetarian Options" },
             ].map((item) => (
               <div key={item.label}>
                 <p className="text-2xl font-bold text-white sm:text-3xl">{item.stat}</p>

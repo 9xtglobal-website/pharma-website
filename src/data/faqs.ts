@@ -5,12 +5,12 @@ export const faqs: FAQ[] = [
   {
     question: "Are your products safe to consume?",
     answer:
-      "All our products are manufactured in certified facilities following strict quality control processes. Each product is formulated with well-researched ingredients at specified dosages. However, we always recommend consulting a healthcare professional before starting any new supplement.",
+      "Each product page lists key ingredients, usage directions, manufacturer details, and safety notes. Please read the label carefully and consult a healthcare professional before starting any new supplement, especially if you have a medical condition or take medication.",
   },
   {
     question: "Do you offer free shipping?",
     answer:
-      "Yes, we offer free shipping on all orders above ₹999. For orders below ₹999, a nominal shipping fee applies. Delivery typically takes 3-5 business days across India.",
+      "Yes, we offer free shipping on all orders above Rs. 999. For orders below Rs. 999, a nominal shipping fee applies. Delivery typically takes 3-5 business days across India.",
   },
   {
     question: "What is your return policy?",
@@ -54,11 +54,11 @@ export const faqs: FAQ[] = [
     productSlug: "nexiwell",
   },
 
-  // Sleepexia FAQs
+  // Slepexia FAQs
   {
     question: "Does Slepexia contain melatonin?",
     answer:
-      "No, Slepexia is a melatonin-free formula. It uses Magnesium Bisglycinate, Bacopa monnieri, Ashwagandha, and Vitamin D2 to support relaxation and sleep quality without melatonin dependency.",
+      "No, Slepexia is a melatonin-free formula. It uses Magnesium Bisglycinate, Bacopa monnieri, Ashwagandha, and Vitamin D2 to support relaxation and sleep-friendly routines without adding melatonin.",
     productSlug: "sleepexia",
   },
   {
@@ -84,7 +84,7 @@ export const faqs: FAQ[] = [
   {
     question: "What is E-BIOCAT technology in Ulida?",
     answer:
-      "E-BIOCAT is an innovative enzyme-based delivery system included in Ulida's formulation. It contains enzymes like Bromelain, Papain, Alpha-amylase, and Cellulase designed to support the delivery and absorption of the active ingredients.",
+      "E-BIOCAT is an enzyme-based system included in Ulida's formulation and licensed from SUGANT SAS, France. Please refer to the product label for the exact composition and use Ulida only as directed.",
     productSlug: "ulida",
   },
   {
@@ -110,7 +110,7 @@ export const faqs: FAQ[] = [
   {
     question: "What is Erexio Gel?",
     answer:
-      "Erexio Gel is a fast-acting topical stimul gel intended for use by adult men. It is designed to support men experiencing erectile dysfunction (ED). It is a topical product and has no known drug interactions, and may be considered by men who are unable to use oral PDE5 inhibitors.",
+      "Erexio Gel is an external-use topical intimate-wellness gel intended for adult men. Read the enclosed instructions before use and consult a healthcare professional if you have any medical concerns.",
     productSlug: "erexio",
   },
   {
@@ -126,9 +126,9 @@ export const faqs: FAQ[] = [
     productSlug: "erexio",
   },
   {
-    question: "Does Erexio have drug interactions?",
+    question: "Should I speak to a professional before using Erexio?",
     answer:
-      "Erexio Gel has no known drug interactions. It is a topical product and may be considered by men unable to use oral PDE5 inhibitors. If you have underlying medical conditions, consult a healthcare professional before use.",
+      "Yes, speak to a healthcare professional before use if you have an underlying medical condition, are using medication, or are unsure whether the product is suitable for you.",
     productSlug: "erexio",
   },
   {

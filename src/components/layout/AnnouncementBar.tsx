@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import CountdownTimer from "@/components/ui/CountdownTimer";
 
 export default function AnnouncementBar() {
   const [dismissed, setDismissed] = useState(false);
@@ -11,12 +10,8 @@ export default function AnnouncementBar() {
   return (
     <div className="relative bg-brand-navy text-white">
       <div className="container-main flex items-center justify-center gap-4 py-2 text-sm">
-        <span className="hidden sm:inline">🌿</span>
-        <span className="font-medium">Launch offer — Free shipping on orders above ₹999</span>
-        <span className="hidden sm:inline">|</span>
-        <span className="hidden sm:inline">
-          <CountdownTimer compact label="Ends in" />
-        </span>
+        <span className="hidden sm:inline">9X Pharma</span>
+        <span className="font-medium">Free shipping on orders above Rs. 999</span>
         <button
           onClick={() => setDismissed(true)}
           className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 transition-colors hover:text-white"

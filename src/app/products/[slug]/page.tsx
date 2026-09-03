@@ -3,13 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { products, getProductBySlug, getOtherProducts } from "@/data/products";
 import { getProductFaqs } from "@/data/faqs";
-import { getProductReviews } from "@/data/reviews";
 import ProductInfo from "@/components/product/ProductInfo";
 import ProductImageGallery from "@/components/product/ProductImageGallery";
 import IngredientTable from "@/components/product/IngredientTable";
 import ProductCard from "@/components/product/ProductCard";
 import FAQAccordion from "@/components/ui/FAQAccordion";
-import ReviewCard from "@/components/ui/ReviewCard";
 import { SUPPLEMENT_DISCLAIMER } from "@/lib/constants";
 
 interface PageProps {
@@ -34,7 +32,6 @@ export default function ProductDetailPage({ params }: PageProps) {
   if (!product) notFound();
 
   const faqs = getProductFaqs(product.slug);
-  const reviews = getProductReviews(product.slug);
   const otherProducts = getOtherProducts(product.slug);
 
   return (
@@ -129,16 +126,6 @@ export default function ProductDetailPage({ params }: PageProps) {
           <div className="flex items-start gap-2 text-sm">
             <span className="font-medium text-brand-grey-700">Marketed by:</span>
             <span className="text-brand-grey-500">{product.marketedBy}</span>
-          </div>
-        </section>
-
-        {/* Reviews */}
-        <section className="mt-12">
-          <h2 className="text-xl font-bold text-brand-navy">Customer Reviews</h2>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {reviews.map((review) => (
-              <ReviewCard key={review.id} review={review} />
-            ))}
           </div>
         </section>
 

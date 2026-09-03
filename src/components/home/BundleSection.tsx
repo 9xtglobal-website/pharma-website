@@ -34,7 +34,7 @@ export default function BundleSection() {
                 Complete Wellness Bundle
               </h2>
               <p className="mt-3 text-base leading-relaxed text-white/60">
-                Get our daily wellness range together and support your overall wellness routine —
+                Get our daily wellness range together and support your overall wellness routine -
                 from daily vitality to restful nights.
               </p>
 

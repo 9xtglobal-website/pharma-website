@@ -16,11 +16,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "9X Pharma — Science-Backed Nutraceuticals for Modern Wellness",
+    default: "9X Pharma - Clear-Label Nutraceuticals for Modern Wellness",
     template: "%s | 9X Pharma",
   },
   description:
-    "Premium nutraceutical products for daily wellness, sleep support, and vitality. Quality-assured formulations backed by science.",
+    "Nutraceutical products for daily wellness, sleep support, and adult men's wellness with clear labels, usage directions, and quality-focused sourcing.",
 };
 
 export default function RootLayout({

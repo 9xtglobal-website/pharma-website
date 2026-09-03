@@ -13,8 +13,8 @@ export default function Footer() {
               <Logo className="h-24 w-auto sm:h-28 lg:h-32" />
             </div>
             <p className="mt-3 text-sm leading-relaxed text-brand-grey-500">
-              Science-backed nutraceutical formulations for modern wellness.
-              Quality-focused products designed to support your daily health routine.
+              Clear-label nutraceutical formulations for modern wellness.
+              Product pages include ingredients, usage directions, and safety notes.
             </p>
           </div>
 
@@ -26,22 +26,22 @@ export default function Footer() {
             <ul className="space-y-2.5">
               <li>
                 <Link href="/products/nexiwell" className="text-sm text-brand-grey-500 transition-colors hover:text-brand-navy">
-                  Nexiwell — Daily Wellness
+                  Nexiwell - Daily Wellness
                 </Link>
               </li>
               <li>
                 <Link href="/products/sleepexia" className="text-sm text-brand-grey-500 transition-colors hover:text-brand-navy">
-                  Slepexia — Sleep Support
+                  Slepexia - Sleep Support
                 </Link>
               </li>
               <li>
                 <Link href="/products/ulida" className="text-sm text-brand-grey-500 transition-colors hover:text-brand-navy">
-                  Ulida — Men&apos;s Vitality
+                  Ulida - Men&apos;s Vitality
                 </Link>
               </li>
               <li>
                 <Link href="/products/erexio" className="text-sm text-brand-grey-500 transition-colors hover:text-brand-navy">
-                  Erexio — Intimate Wellness
+                  Erexio - Intimate Wellness
                 </Link>
               </li>
               <li>
@@ -69,13 +69,24 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <span className="text-sm text-brand-grey-500">Shipping & Delivery</span>
+                <Link href="/shipping" className="text-sm text-brand-grey-500 transition-colors hover:text-brand-navy">
+                  Shipping & Delivery
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-brand-grey-500">Returns & Refunds</span>
+                <Link href="/returns" className="text-sm text-brand-grey-500 transition-colors hover:text-brand-navy">
+                  Returns & Refunds
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-brand-grey-500">Privacy Policy</span>
+                <Link href="/privacy" className="text-sm text-brand-grey-500 transition-colors hover:text-brand-navy">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="text-sm text-brand-grey-500 transition-colors hover:text-brand-navy">
+                  Terms & Conditions
+                </Link>
               </li>
             </ul>
           </div>

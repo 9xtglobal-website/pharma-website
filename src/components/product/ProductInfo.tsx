@@ -4,9 +4,7 @@ import { useState } from "react";
 import { Product } from "@/types";
 import { useCart } from "@/context/CartContext";
 import PriceDisplay from "@/components/ui/PriceDisplay";
-import StarRating from "@/components/ui/StarRating";
 import QuantitySelector from "@/components/ui/QuantitySelector";
-import CountdownTimer from "@/components/ui/CountdownTimer";
 import Badge from "@/components/ui/Badge";
 import TrustBadges from "@/components/ui/TrustBadges";
 import { DELIVERY_DAYS, WHATSAPP_NUMBER } from "@/lib/constants";
@@ -38,9 +36,6 @@ export default function ProductInfo({ product }: ProductInfoProps) {
       {/* Tagline */}
       <p className="text-base text-brand-grey-500">{product.tagline}</p>
 
-      {/* Rating */}
-      <StarRating rating={4.5} count={42} />
-
       {/* Badges */}
       <div className="flex flex-wrap gap-2">
         {product.badges.map((badge) => (
@@ -51,16 +46,25 @@ export default function ProductInfo({ product }: ProductInfoProps) {
       {/* Price */}
       <PriceDisplay mrp={product.mrp} salePrice={product.salePrice} size="lg" />
 
-      {/* Urgency timer */}
-      <CountdownTimer compact />
-
-      {/* Stock status */}
-      {product.stockStatus === "low_stock" && product.stockLeft && (
-        <div className="flex items-center gap-2 rounded-lg bg-orange-50 px-3 py-2">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-orange-500" />
-          <span className="text-sm font-medium text-orange-700">
-            Only {product.stockLeft} left in stock — order soon
-          </span>
+      {product.slug === "ulida" && (
+        <div className="rounded-xl border border-brand-green/20 bg-brand-green-pale/60 p-4">
+          <h2 className="text-sm font-semibold text-brand-navy">Why Ulida is priced differently</h2>
+          <p className="mt-2 text-sm leading-relaxed text-brand-grey-600">
+            One pack contains 60 vegetarian capsules. At the suggested use of 3 capsules per day,
+            it is a 20-day course. The formula includes a French-licensed E-BIOCAT enzyme system
+            and targeted adult men&apos;s vitality ingredients.
+          </p>
+          <a
+            href={getWhatsAppUrl(
+              WHATSAPP_NUMBER,
+              "Hi, I want to know about Ulida multi-pack or subscription options."
+            )}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 inline-flex text-sm font-semibold text-brand-green-dark hover:text-brand-navy"
+          >
+            Ask about multi-pack pricing
+          </a>
         </div>
       )}
 

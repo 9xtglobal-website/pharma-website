@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Product } from "@/types";
 import { useCart } from "@/context/CartContext";
 import PriceDisplay from "@/components/ui/PriceDisplay";
-import StarRating from "@/components/ui/StarRating";
 import Badge from "@/components/ui/Badge";
 import ProductImage from "@/components/ui/ProductImage";
 import { WHATSAPP_NUMBER } from "@/lib/constants";
@@ -14,16 +13,6 @@ interface ProductCardProps {
   product: Product;
 }
 
-const REVIEW_COUNTS: Record<string, number> = {
-  nexiwell: 47,
-  sleepexia: 62,
-  ulida: 38,
-};
-
-function getReviewCount(id: string): number {
-  return REVIEW_COUNTS[id] ?? 30;
-}
-
 export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
 
@@ -31,9 +20,6 @@ export default function ProductCard({ product }: ProductCardProps) {
     <div className="group card relative flex h-full flex-col">
       {/* Badges */}
       <div className="absolute left-4 top-4 z-10 flex flex-col gap-1">
-        {product.stockStatus === "low_stock" && (
-          <Badge text={`Only ${product.stockLeft} left`} variant="stock" />
-        )}
         {product.badges[0] && <Badge text={product.badges[0]} />}
       </div>
 
@@ -42,7 +28,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="relative aspect-square overflow-hidden rounded-xl bg-gradient-to-br from-brand-grey-50 to-brand-grey-100">
           <ProductImage
             src={product.images[0]}
-            alt={`${product.name} — ${product.tagline}`}
+            alt={`${product.name} - ${product.tagline}`}
             productName={product.name}
             unit={product.unit}
             fill
@@ -67,17 +53,12 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Tagline */}
       <p className="mt-1 text-sm text-brand-grey-500">{product.tagline}</p>
 
-      {/* Rating */}
-      <div className="mt-2">
-        <StarRating rating={4.5} count={getReviewCount(product.id)} size="sm" />
-      </div>
-
       {/* Price */}
       <div className="mt-3">
         <PriceDisplay mrp={product.mrp} salePrice={product.salePrice} size="sm" showSavings={false} />
       </div>
 
-      {/* Actions — pushed to bottom of card so buttons line up across the row */}
+      {/* Actions stay at the bottom so buttons line up across the row. */}
       <div className="mt-auto flex gap-2 pt-4">
         {product.salePrice === 0 ? (
           <a

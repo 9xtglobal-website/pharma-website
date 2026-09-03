@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pharma.9xtg.com/sitemap.xml

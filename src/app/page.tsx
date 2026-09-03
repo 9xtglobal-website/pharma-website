@@ -1,8 +1,8 @@
 import Hero from "@/components/home/Hero";
+import GoalNavigation from "@/components/home/GoalNavigation";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
 import BenefitCards from "@/components/home/BenefitCards";
 import BundleSection from "@/components/home/BundleSection";
-import TestimonialSection from "@/components/home/TestimonialSection";
 import TrustBadges from "@/components/ui/TrustBadges";
 import FAQAccordion from "@/components/ui/FAQAccordion";
 import { getGlobalFaqs } from "@/data/faqs";
@@ -14,10 +14,10 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <GoalNavigation />
       <FeaturedProducts />
       <BenefitCards />
       <BundleSection />
-      <TestimonialSection />
 
       {/* Trust Badges Section */}
       <section className="py-12">
@@ -51,7 +51,7 @@ export default function HomePage() {
               Start Your Wellness Routine Today
             </h2>
             <p className="mt-3 text-base text-white/60 sm:text-lg">
-              Choose the product that matches your wellness need. Free shipping on orders above ₹999.
+              Choose the product that matches your wellness need. Free shipping on orders above Rs. 999.
             </p>
             <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Link href="/products" className="btn-primary w-full sm:w-auto sm:px-8 sm:py-4">
